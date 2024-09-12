@@ -13,5 +13,14 @@ kubectl apply -f plugin-manifests.yaml -n argocd
 ```
 kubectl apply -f argocd/Applicationset.yaml -n argocd
 ```
+---
+Here's how the flow looks like : 
+```
+[Custom Generator Plugin] --> [ApplicationSet] --> [Argo CD Applications]
+      ^                             |
+      |                             v
+[PostgreSQL Database]        [Kubernetes Cluster]
+```
+---
 
 Reference : https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Plugin/
