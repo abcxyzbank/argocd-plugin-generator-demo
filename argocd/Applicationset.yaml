@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: tenant-generator-plugin-demo
+  namespace: argocd
+spec:
+  generators:
+  - plugin:
+      configMapRef:
+        name: tenant-generator-plugin
+      requeueAfterSeconds: 120
+  goTemplate: true
+  template:
+    metadata:
+      name: 'foobar-app-{{ .tenant | lower | replace "_" "-" }}'
+      labels:
+        org: '{{ .tenant }}'
+    spec:
+      project: default
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: foobar-service
+      source:
+        chart: podinfo
+        repoURL: https://stefanprodan.github.io/podinfo
+        targetRevision: 6.7.0
+        helm:
+          parameters:
+          - name: "fullnameOverride"
+            value: 'foobar-app-{{ .tenant | lower | replace "_" "-" }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+          allowEmpty: true
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+          - CreateNamespace=true
