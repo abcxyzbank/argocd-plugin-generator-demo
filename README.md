@@ -13,6 +13,10 @@ kubectl apply -f plugin-manifests.yaml -n argocd
 ```
 kubectl apply -f argocd/Applicationset.yaml -n argocd
 ```
+- The Dockerimage can be pulled by running : 
+```
+docker pull tanmaybhat/tenant-generator-plugin-demo:latest
+```
 ---
 Here's how the flow looks like : 
 ```
